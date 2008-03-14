@@ -1,0 +1,213 @@
+
+INTRO:
+------
+"sacmon" is a simple program for retrieving data from a "sac" server or a file,
+processing it to flag and excise RFI, merging and averaging sets of data to
+improve the signal to noise ratio of the resulting data, and displaying the
+data to the screen or an output file. 
+
+The current release is a cut-down version of an older sacmon program which 
+was also able to derive a model of the sky which best matches observed
+interferometer fringes. The modelling code may reappear in a standalone
+program, there is no reason for it to be integrated into sacmon.
+
+Some sample data files can be found in the data/ subdirectory. After you build
+sacmon you can use these data files to test it.
+
+USING SACMON:
+-------------
+sacmon is a non-interactive program which must be configured using command line
+arguments. The command line arguments are described in the following sections,
+and then there is a section about how to use sacmon in practice. Note that
+there are a hell of a lot of command line options and most of them are pretty
+cryptic.
+
+Loading Data:
+-------------
+A data request consists of one or more data load commands in a continuous set
+on the command line. Data request are delimited using any other command line
+options. Data load requests can specify that data should be loaded from a file
+or from a network server.
+
+To load data from a file, use "-F <filename>", eg:
+./sacmon  -F data/150m.dat
+
+When loading data from a network server you need to specify the time range of
+the data. Times are specified in the format, YYYY.MM.DD.hh:mm:ss, eg,
+2003.8.30.12:30:00 If the second time in the range has the value 0 it is given
+the special meaning of 24 hours after the start time. If the start time is
+given the special value of 0 it means 24 hours before right now.
+
+This will download the most recent 24 hours worth of data:
+./sacmon  -T 0 0
+
+This will download data between the nominated times:
+./sacmon  -T  2003.8.30:12:30:00  2003.8.30.14:30:00
+
+This will download 24 hours worth of data from the given start time:
+./sacmon  -T  2003.8.30:12:30:00  0
+
+This will create a data set by loading the data from a file, then loading the
+previous 24 hours of data from a sac network server, then merging the two data
+sets and performing RFI excision/data integration on the combined data set.
+./sacmon  -F /tmp/data.dat  -T 0 0
+
+Note the name of the network server can be set using the option "-x", by
+default this is set to "localhost". For instance to load the last 24 hours of
+data from simple, you would use:
+./sacmon  -x simple.atnf.csiro.au  -T 0 0
+
+Note that, if loading data over the network (not from "localhost"), then a 
+flag will be sent to the server asking it to perform some pre-processing on the
+data. This greatly speeds up the effective data transfer rate over a slow link,
+but means some information will be lost (since the server will average data
+over short time scales). To prevent the server from preprocessing the data you
+can use the "-R 0" option discussed below.
+
+Processing data:
+----------------
+sacmon will combine all data specified in consecutive command line arguments.
+If the time modes of the different data are not the same, for instance if one
+is in sidereal time format and the other is not, meaningless data may result.
+
+By default sacmon will search for possible RFI in the data and discard it. If
+you wish to turn RFI processing off, it can be done with the "-R 0" option, eg:
+./sacmon  -R 0  <other options>
+This can also be used to prevent server-side pre-processing when loading data
+from a remote machine.
+
+sacmon searches for data which stands out above the local mean. This is great
+for removing spikes from lightning, fluoro lights, etc. sacmon discards any data
+more than S standard deviations from the local mean. This number can be set
+using the "-S" option, lower numbers discard more data: 
+./sacmon  -S 2.0  <other options>
+
+The other RFI excision technique is to discard entire blocks of data if the
+variance is too high with respect to the mean. This is useful for
+finding periods where a transmitter was operating in the pass band or other
+noisy periods. You will need to turn this down to observe bursty data like
+solar flares. It is controlled using the "-N" option, lower numbers discard
+less data.
+./sacmon  -N 1  <other options>    #Flag minimal data
+./sacmon  -N 30 <other options>    #Flag lots of data
+
+All data not flagged as RFI will be averaged up to a user specified integration
+period (by default set to 30 seconds). The integration period (in seconds) can
+be set using the "-I" option, for instance to use a 120 second integration
+time:  
+./sacmon  -I 120  <other options>
+
+You can use the "-r" option to specify a reference file. All other loaded data 
+will then have both inputs translated to most closely match levels in the 
+reference data file. The cross correlation quantities are scaled accordingly.
+
+You can use this feature to scale data to a known level so that you can
+make more meaningful comparisons, to calibrate data, or to help average
+data from different days together. This option only works when you are
+working in sidereal time (LST) mode.
+
+Displaying Data:
+----------------
+In its default form sacmon will display two graph panels. The top panel will
+show data detected by the receivers, the bottom panel will show the cross
+product data. 
+
+If, instead, you only want to show the input data you can use the "-noX" option
+to prevent the display of the cross correlation data. If you only want to show
+the cross correlation and no input data you can use the "-X" option. If you
+only want to display input 1 use "-1" option, or "-2" if you only want to
+display input 2.
+
+Normally the graphs are autoscaled. If you wish to specify your own parameters
+for the scales of the graph you can use "-max <number>" to set the peak scale
+of the inputs to <number>. You can use "-maxX <number>" and "-minX <number>"
+to set the maximum and minimum scales for the cross product data.
+
+To print the output plots to a file rather than the pgplot window you can
+specify a filename using the -O (for output) option. This expects a filename
+output ending in .ps (postscript output) or .png (network graphic output).
+./sacmon  -O /tmp/bigflare.ps
+
+By default sacmon will display the raw unprocessed data as dots and the post
+processed data with lines. The dots and lines will be overlaid on the same
+graph panels with the scale determined by the processed data.
+
+If you wish to display only the processed data, as a LINE, use the "-L" (for
+line) option.
+
+To display only processed data, using a DOT for each integration period, use
+the "-D" (for dot) option.
+
+Normally we display the cross power values in the bottom panel. To display the
+complex cross product terms, amplitude and phase information use the "-C" (for
+complex) option. These aren't really used yet... not properly in any case.
+
+To display an additional panel showing the interferometer data from a second
+file or time period you can specify two sets of data on the command line 
+spaced by any other sacmon argument, eg:
+./sacmon -T 0 0  -I 10  -F /tmp/ref.dat
+
+
+SACMON IN PRACTICE:
+-------------------
+
+An additional feature of sacmon is the ability to translate data to local
+sidereal time (LST) format. This mode is activated by the "-LST" option. In
+order for this to work sacmon needs to know the longitude of the telescope
+system in question. If loading data over the network then the server will be
+queried to find it's longitude. 
+
+If using LST time mode and loading from a file you will be prompted to enter
+the telescope's longitude for each file. To specify a longitude for ALL files
+you can use the "-l" command line option:
+
+./sacmon  -F mydata.dat -LST -l 149.9
+
+sacmon writes the last data set to be processed to a file called 'data.out'
+each time it is run. You can rename this file more appropriately or it will be
+overwritten.
+
+Say you wanted to get 24 hours of good data for some interferometer baseline.
+You could load each 24 hour period over the last week using pretty harsh RFI
+processing options and a shortish integration period. Convert the data to LST
+time format and copy the generated data file to a safe place.
+
+./sacmon  -T 2003.3.2.0:0:0  0  -N 20  -S 1.0  -I 10  -LST
+cp  data.out  /tmp/2ndMarch.dat
+
+The RFI processing will mean that the data for any given day will probably
+contain gaps. You can combine the data from different days to fill in the gaps.
+Where there is overlap between different days this will also help to improve
+the signal to noise ratio of the data by averaging out the noise contribution.
+
+./sacmon  -F /tmp/2ndMarch.dat  -F /tmp/3rdMarch.dat  -I 10
+cp  data.out  /tmp/Combined.dat
+
+
+BUILD INSTRUCTIONS:
+-------------------
+In order to build sacmon you should (if you have Linux, the right compiler and
+dependent libraries) only need to issue the command...
+
+	make
+	
+...in the directory containing the sac source code. This produces a binary 
+executable called 'sacmon'. Please let me know if you had to alter the Makefile 
+or the code to get sac to build on your system. 
+
+Send bug fixes/comments/patches/feature requests to brodrick@fastmail.fm
+
+It is certainly NOT ANSI C++ compliant, for lots of reasons. It might be hard
+to build this software using compilers other than gcc and operating systems
+other than Linux. You are encouraged to try anyway.
+
+This also requires libpgplot5 for rendering the graphs.
+
+
+LICENSE: 
+--------
+Copyright David Brodrick 2001-2004.
+
+<insert pseudolegal phrase here>
+
+sacmon comes with NO warranty to the extent permitted by law. 
