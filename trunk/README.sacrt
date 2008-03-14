@@ -1,0 +1,51 @@
+
+INTRO:
+------
+"sacrt" can collect and display real-time data from one or more "sac" servers.
+It is useful for monitoring telescope data during periods of astronomical 
+interest or to check/tweak telescope performance. The program is able to 
+connect to multiple servers and rescale the data to compensate for different
+volume levels at different sites.
+
+
+USING SACRT:
+-------------
+sacrt is a command line driven program which accepts the following arguments:
+
+-s <servername> Connect to the given server, eg "simple.atnf.csiro.au"
+                Give multiple -s arguments to connect to multiple servers.
+-t <time>       Graph time span in hours, in HH:MM format, "0:30"
+-u <seconds>    Update interval in seconds, eg, "10"
+-r <seconds>    Rescale the graphs every this many seconds, eg "60"
+-o              Scale the power levels to a common value and then offset them
+-LST            Show the time axis in server Local Sidereal Time
+
+
+
+BUILD INSTRUCTIONS:
+-------------------
+In order to build sacrt you should (if you have Linux, the right compiler and
+dependent libraries) only need to issue the command...
+
+	make
+	
+...in the directory containing the sac source code. This produces a binary 
+executable called 'sacrt'. Please let me know if you had to alter the Makefile 
+or the code to get sac to build on your system. 
+
+Send bug fixes/comments/patches/feature requests to brodrick@fastmail.fm
+
+It is certainly NOT ANSI C++ compliant, for lots of reasons. It might be hard
+to build this software using compilers other than gcc and operating systems
+other than Linux. You are encouraged to try anyway.
+
+This requires libpgplot5 for rendering the graphs.
+
+
+LICENSE: 
+--------
+Copyright David Brodrick 2001-2004.
+
+<insert pseudolegal phrase here>
+
+sacrt comes with NO warranty to the extent permitted by law. 

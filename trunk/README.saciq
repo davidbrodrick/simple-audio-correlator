@@ -1,0 +1,29 @@
+INTRODUCTION
+------------
+
+saciq is a program for generating complex visibilities (amplitude and phase)
+from two separate files which contain fringes in quadrature..
+
+Basically, if, for a given baseline, you capture a set of fringes, and then
+insert a delay line between your local oscillators so that the two receivers
+are running 90 degrees out of phase (in quadrature) and capture this other set
+of fringes, then you can derive the astronomical amplitude and phase
+information - which is what we really want from our interferometers.
+
+The usage is very easy the in-phase dataset is specified with the -i option and
+the quadrature dataset is specified with -q.
+
+There is two sample files in the data/ directory which you can use to
+demonstrate this idea. Try running
+
+./saciq  -i data/90m-I.dat  -q data/90m-Q.dat
+
+The resulting data is plotted on the screen. It is also written in "SAC" binary
+form to a file called complex.out and in ASCII text form to complex.txt.
+
+TODO
+----
+There must be an easy way to apply a correction for the case that your LOs
+aren't exactly 90 degrees out of phase. Also we should be able to take an
+arbitrary phase correction as a command line argument and apply that to the
+data.

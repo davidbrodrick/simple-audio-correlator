@@ -1,0 +1,53 @@
+
+INTRO:
+------
+
+"sacmkwav" can retrieve raw audio data from a Simple Audio Correlator (sac)
+server or a sac data file (one that contains raw audio data!) and converts it
+into a WAVE (.wav) audio file suitable for replay.
+
+The program queries the server to see if it has audio data available for the 
+specified period. (From the server setup point of view, this involves the 
+keywords 'storeraw', 'rawstoredir' and 'maxrawage').
+
+THE RESULTING WAVE AUDIO FILE WILL BE SAVED TO 'data.wav'
+
+The data file version will be saved to data.out. If you load this file with
+sacmon the correlations will be recalculated. This is a handy trick if you
+are experimenting with different correlator software.
+
+
+USING SACMKWAV:
+-------------
+sacmkwav is a non-interactive program which must be configured using command
+line arguments. The command line arguments are described in the following
+sections, and then there is a section about how to use sacmkwav in practice.
+
+Loading Data:
+-------------
+A data request consists of one or more data load commands in a continuous set
+on the command line. Data request are delimited using any other command line
+options. Data load requests can specify that data should be loaded from a file
+or from a network server.
+
+To load data from a file, use "-F <filename>", eg:
+./sacmkwav  -F mydata.dat
+
+When loading data from a network server you need to specify the time range of
+the data. Times are specified in the format, YYYY.MM.DD.hh:mm:ss, eg,
+2003.8.30.12:30:00 If the second time in the range has the value 0 it is given
+the special meaning of 15 seconds after the start time.
+
+This will download data between the nominated times:
+./sacmkwav  -T  2003.8.30:12:30:00  2003.8.30.14:30:00
+
+This will download 15 seconds of data from the given start time:
+./sacmkwav  -T  2003.8.30:12:30:00  0
+
+Note the name of the network server can be set using the option "-x", by
+default this is set to "localhost". For instance to load the last 24 hours of
+data from simple, you would use:
+./sacmkwav  -x simple.atnf.csiro.au  -T 0 0
+
+
+THE RESULTING WAVE AUDIO FILE WILL BE SAVED TO 'data.wav'
