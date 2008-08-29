@@ -31,7 +31,9 @@
 #include <ConfigFile.h>
 #include <iostream>
 #include <unistd.h>
+#include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 //Configure sound card and start the audio thread
 void initAudio(ConfigFile &config, Buf<IntegPeriod*> &sink);
@@ -44,7 +46,7 @@ void initProcessor(ConfigFile &config, Buf<IntegPeriod*> &source,
 //Program starts execution here
 int main(int argc, char *argv[])
 {
-  char *fname = "sac.conf"; //Default configuration file
+  const char *fname = "sac.conf"; //Default configuration file
 
   if (argc>1) {
     if (strcmp(argv[1], "-h")==0) {

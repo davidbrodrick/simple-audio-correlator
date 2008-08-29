@@ -13,7 +13,7 @@
 
 #define MAXLINELEN 1001
 
-ConfigFile::ConfigFile(char *fname)
+ConfigFile::ConfigFile(const char *fname)
   :itsDoRealTime(false),
   itsIntegTime(1000),
   itsAudioDev("/dev/dsp"),
