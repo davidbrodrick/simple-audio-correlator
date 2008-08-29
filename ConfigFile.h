@@ -69,7 +69,7 @@ private:
 
 public:
   //Load and parse the specified file
-  ConfigFile(char *fname);
+  ConfigFile(const char *fname);
 
   //Return true if the file says to run the realtime data processor
   inline bool getDoRealTime() {return itsDoRealTime;}
