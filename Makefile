@@ -10,11 +10,12 @@ LIBFLAGS= -g -lstdc++ -lpthread -DREENTRANT -pthread -D_POSIX_REENTRANT_FUNCTION
 XLIBFLAGS = -lstdc++ -lX11 -lcpgplot -lpgplot -lpng \
             -L/usr/X11R6/lib/ -L/usr/lib
 
-all:	sac sacmon sacmkwav saciq sacrt sacedit
+all:	sac sacmon sacmkwav saciq sacrt sacedit sacforward sacmerge \
+	sacrotate sacsim sacmodel sacriometer
 
 SACOBJS	= sac.o ConfigFile.o AudioSource.o Processor.o StoreMaster.o \
 	  WebMaster.o WebHandler.o RFI.o IntegPeriod.o ThreadedObject.o \
-	  TCPstream.o Buf.o TimeCoord.o
+	  TCPstream.o Buf.o TimeCoord.o DataForwarder.o
 	  
 sac:	$(SACOBJS)           	
 	$(LIB) -o sac $(SACOBJS) $(LIBFLAGS)
