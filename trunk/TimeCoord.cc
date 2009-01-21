@@ -323,3 +323,11 @@ vec3d_t getuvw(vec3d_t bsln, pair_t hadec, double freq)
   return res;
 }
 
+/*int main() {
+  timeAbs_t now=getAbs();
+  pair_t radec = solarPosition(now);
+  pair_t pos={PI*150/180.0, PI*-30/180.0};
+  timeLST_t lst = Abs2LST(now, pos);
+  pair_t azel = Eq2Hor(lst, radec, pos);
+  cout << printAzEl(azel) << endl;
+}*/
