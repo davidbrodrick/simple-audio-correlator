@@ -35,6 +35,7 @@ typedef enum displayT {
   screen,
   postscript,
   png,
+  gif,
   dump
 } displayT;
 
@@ -80,6 +81,25 @@ int main (int argc, char *argv[])
         exit(1);
       }
       _numsources++;
+    } else if (strcmp(argv[i], "-O")==0) {
+      istringstream tmp(argv[i+1]);
+      string fname;
+      tmp >> fname;
+      if (fname.find(".png")!=string::npos || fname.find(".PNG")!=string::npos) {
+        _display = png;
+        cerr << "Will write PNG output to " << fname << endl;
+      } else if (fname.find(".ps")!=string::npos || fname.find(".PS")!=string::npos) {
+        _display = postscript;
+        cerr << "Will write postscript output to " << fname << endl;
+      } else if (fname.find(".gif")!=string::npos || fname.find(".GIF")!=string::npos) {
+        _display = gif;
+        cerr << "Will write GIF output to " << fname << endl;
+      } else if (fname.find(".xwd")!=string::npos || fname.find(".XWD")!=string::npos) {
+        _display = dump;
+        cerr << "Will write XWD output to " << fname << endl;
+      } else {usage();}
+        _savefile = argv[i+1];
+      i+=1;
     }
   }
 
@@ -179,9 +199,9 @@ int main (int argc, char *argv[])
 //Print a usage message and exit
 void usage()
 {
-  cerr << "\nUSAGE: sacsim <site_def> -s <source_def1> -s <source_defN>\n";
+  cerr << "\nUSAGE: sacsim <site_def> -s <source_def1> -s <source_defN> <-O out.png>\n";
   cerr << " This models the interferometer amplitude and phase reponse to a number of\n";
-  cerr << " astronomical radio sources.\n\n";
+  cerr << " astronomical radio sources.\n";
   cerr << endl;
   cerr << " The site definition must come first in the format \"lon lat EW NS F phi\"\n";
   cerr << " (the quotes are required). Where:\n";
