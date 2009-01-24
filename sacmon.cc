@@ -696,8 +696,8 @@ void parseArgs(int argc, char *argv[])
       i+=1;
     } else if (tempstr == "-I") {
       if (argc<i+2) {
-	cerr << "Insufficient arguments after -I option\n";
-	usage();
+        cerr << "Insufficient arguments after -I option\n";
+        usage();
       }
 
       istringstream tmp(argv[i+1]);
@@ -708,8 +708,8 @@ void parseArgs(int argc, char *argv[])
       i+=1;
     } else if (tempstr == "-S") {
       if (argc<i+2) {
-	cerr << "Insufficient arguments after -S option\n";
-	usage();
+        cerr << "Insufficient arguments after -S option\n";
+        usage();
       }
       istringstream tmp(argv[i+1]);
       tmp >> _sigma;
@@ -718,8 +718,8 @@ void parseArgs(int argc, char *argv[])
       i+=1;
     } else if (tempstr == "-N") {
       if (argc<i+2) {
-	cerr << "Insufficient arguments after -N option\n";
-	usage();
+        cerr << "Insufficient arguments after -N option\n";
+        usage();
       }
 
       istringstream tmp(argv[i+1]);
@@ -749,8 +749,8 @@ void parseArgs(int argc, char *argv[])
       cerr << "Will use a white background\n";
     } else if (tempstr == "-max") {
       if (argc<i+1) {
-	cerr << "Insufficient arguments after -max option\n";
-	usage();
+        cerr << "Insufficient arguments after -max option\n";
+        usage();
       }
       istringstream tmp(argv[i+1]);
       tmp >> _maxscale;
@@ -759,8 +759,8 @@ void parseArgs(int argc, char *argv[])
       i+=1;
     } else if (tempstr == "-maxX") {
       if (argc<i+1) {
-	cerr << "Insufficient arguments after -maxX option\n";
-	usage();
+        cerr << "Insufficient arguments after -maxX option\n";
+        usage();
       }
       istringstream tmp(argv[i+1]);
       tmp >> _maxxscale;
@@ -769,8 +769,8 @@ void parseArgs(int argc, char *argv[])
       i+=1;
     } else if (tempstr == "-minX") {
       if (argc<i+1) {
-	cerr << "Insufficient arguments after -minX option\n";
-	usage();
+        cerr << "Insufficient arguments after -minX option\n";
+        usage();
       }
       istringstream tmp(argv[i+1]);
       tmp >> _minxscale;
@@ -782,26 +782,26 @@ void parseArgs(int argc, char *argv[])
       string fname;
       tmp >> fname;
       if (fname.find(".png")!=string::npos || fname.find(".PNG")!=string::npos) {
-	_display = png;
-	cerr << "Will write PNG output to " << fname << endl;
+        _display = png;
+        cerr << "Will write PNG output to " << fname << endl;
       } else if (fname.find(".ps")!=string::npos || fname.find(".PS")!=string::npos) {
-	_display = postscript;
-	cerr << "Will write postscript output to " << fname << endl;
+        _display = postscript;
+        cerr << "Will write postscript output to " << fname << endl;
       } else if (fname.find(".gif")!=string::npos || fname.find(".GIF")!=string::npos) {
-	_display = gif;
-	cerr << "Will write GIF output to " << fname << endl;
+        _display = gif;
+        cerr << "Will write GIF output to " << fname << endl;
       } else if (fname.find(".xwd")!=string::npos || fname.find(".XWD")!=string::npos) {
-	_display = dump;
-	cerr << "Will write XWD output to " << fname << endl;
+        _display = dump;
+        cerr << "Will write XWD output to " << fname << endl;
       } else {usage();}
-      _savefile = argv[i+1];
+        _savefile = argv[i+1];
       i+=1;
     } else if (tempstr == "-comment" || tempstr == "--comment") {
       //Ensure the argument follows, the shell decodes any ""'s for us
       if (argc<=i+1){
-	cerr << "ERROR: The \"" << tempstr << "\" command requires a \"comment\" argument, eg:\n";
-	cerr << "\t" << tempstr << " \"2005/02/17, Bloggsville Observatory, 10MHz\"\n";
-	exit(1);
+        cerr << "ERROR: The \"" << tempstr << "\" command requires a \"comment\" argument, eg:\n";
+        cerr << "\t" << tempstr << " \"2005/02/17, Bloggsville Observatory, 10MHz\"\n";
+        exit(1);
       }
       _comment = string(argv[i+1]);
       i+=1;
