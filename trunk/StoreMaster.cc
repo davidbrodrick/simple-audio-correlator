@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <assert.h>
+#include <string.h>
 
 //Static Members
 //Maximum number of integration periods to return for any request. This is to

@@ -25,6 +25,7 @@
 #include <math.h>
 #include <assert.h>
 #include <unistd.h>
+#include <cstring>
 
 extern "C" {
 #include <cpgplot.h>

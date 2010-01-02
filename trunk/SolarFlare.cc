@@ -15,6 +15,7 @@
 #include <RFI.h>
 #include <iostream>
 #include <math.h>
+#include <cstdlib>
 
 extern "C" {
   double atm8_chapman__(double *X, double *chi0);
