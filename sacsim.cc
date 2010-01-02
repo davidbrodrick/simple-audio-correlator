@@ -22,6 +22,7 @@
 #include <sys/time.h>
 #include <math.h>
 #include <assert.h>
+#include <cstring>
 
 extern "C" {
 #include <cpgplot.h>

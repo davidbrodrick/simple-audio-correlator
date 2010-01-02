@@ -10,6 +10,7 @@
 
 #include <ConfigFile.h>
 #include <iostream>
+#include <cstdlib>
 
 #define MAXLINELEN 1001
 

@@ -18,6 +18,7 @@
 #include <sstream>
 #include <math.h>
 #include <assert.h>
+#include <cstdlib>
 
 extern "C" {
 #include <cpgplot.h>

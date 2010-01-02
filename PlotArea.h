@@ -47,7 +47,7 @@ public:
     bool setAxisX(char *title, float max, float min, bool autoscale);
     bool setAxisY(char *title, float max, float min, bool autoscale);
 
-    void drawContours(float **data, int len1, int len1,
+    void drawContours(float **data, int len1, int len2,
 		      int min1, int min2, int max1, int max2,
 		      float off1, float off2, float sca1, float sca2);
 

@@ -17,6 +17,7 @@
 #include <sstream>
 #include <iomanip>
 #include <math.h>
+#include <cstring>
 
 pthread_mutex_t _time_lock_ = PTHREAD_MUTEX_INITIALIZER;
 

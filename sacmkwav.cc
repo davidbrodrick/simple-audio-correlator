@@ -15,6 +15,7 @@
 #include <TimeCoord.h>
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 
 using namespace::std;
 
