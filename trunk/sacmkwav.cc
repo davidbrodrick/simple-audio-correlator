@@ -68,6 +68,11 @@ void doRequest(istringstream &command, int set)
   int count = 0;
   IntegPeriod *data = NULL;
 
+  if (_samprate==0) {
+    cerr << "ERROR: No sampling rate was available, cannot write audio file!\n";
+    exit(1);
+  }
+
   loadData(command, data, count);
   if (count==0) {
     cerr << "No data was returned for that time!\n";
@@ -101,46 +106,46 @@ void loadData(istringstream &command, IntegPeriod *&data, int &count)
       command >> str;
       if (!command.good()) {
         cerr << "Bad argument after -T option (1)\n\n";
-	usage();
+        usage();
       }
       if (str=="0") {
-	//Treat zero as right now
+        //Treat zero as right now
         start = getAbs();
       } else {
         //otherwise parse the time from argument
-	istringstream argdate1(str);
-	start = parseDate(argdate1);
+        istringstream argdate1(str);
+        start = parseDate(argdate1);
       }
       command >> str;
       if (str=="0") {
-	//Treat zero as '15 seconds after start time'
+        //Treat zero as '15 seconds after start time'
         end = start + 15000000ll;
       } else {
         //otherwise parse the time from argument
-	istringstream argdate2(str);
-	end = parseDate(argdate2);
+        istringstream argdate2(str);
+        end = parseDate(argdate2);
       }
       cerr << "Loading from network:\n";
 
       if (!IntegPeriod::loadraw(tempdata, tempcount, start, end,
 				_samprate, _server.c_str())) {
-	cerr << "Could not obtain requested data, quitting\n";
-	exit(1);
+        cerr << "Could not obtain requested data, quitting\n";
+        exit(1);
       }
     } else if (str=="-F") {
       //we are going to load a file, get the filename
       command >> str;
       if (!command.good()) {
         cerr << "Bad argument after -F option\n\n";
-	usage();
+        usage();
       }
       cerr << "Loading data from file \'" << str << "\'";
-      if (!IntegPeriod::load(tempdata, tempcount, str.c_str())) {
-	cerr << "Could not obtain requested data, quitting\n";
-	exit(1);
+      if (!IntegPeriod::load(tempdata, tempcount, str.c_str(), true)) {
+        cerr << "Could not obtain requested data, quitting\n";
+        exit(1);
       }
       if (tempcount>0) {
-	start = tempdata[0].timeStamp;
+        start = tempdata[0].timeStamp;
       }
       cerr << "\tOK " << tempcount << " loaded\n";
     } else {
@@ -184,49 +189,54 @@ void parseArgs(int argc, char *argv[])
 
   int i=1;
   //Loop throught the arguments
-  for (; i<argc; i++)
-    {
-      string tempstr;
-      tempstr = (argv[i]);
+  for (; i<argc; i++) {
+    string tempstr;
+    tempstr = (argv[i]);
 
-      if (tempstr == "-x") {
-	istringstream tmp(argv[i+1]);
-	tmp >> _server;
-	cerr << "Will load network data from: " << _server << endl;
-        i++;
-      } else if (tempstr=="-T" || tempstr=="-F") {
-	//A sequence of data sources to merge
-	ostringstream argcom;
-	while (i<argc) {
-	  if (tempstr=="-T") {
-            argcom << " -T ";
-	    if (argc<i+3) {
-	      cerr << "Insufficient arguments after -T option\n";
-	      usage();
-	    }
-            argcom << argv[i+1] << " " << argv[i+2];
-	    i+=3;
-	  } else if (tempstr=="-F") {
-	    argcom << " -F ";
-            argcom << argv[i+1] << " ";
-	    i+=2;
-	  } else break;
-	  if (i<argc) tempstr = argv[i];
-	}
-	i--;
-	string *newcommands = new string[_numdatarequests+1];
-	for (int j=0; j<_numdatarequests; j++) {
-	  newcommands[j] = _datarequests[j];
-	}
-	newcommands[_numdatarequests] = argcom.str();
-	_numdatarequests++;
-	delete[] _datarequests;
-	_datarequests = newcommands;
-      } else {
-	cerr << "Bad argument \'"<< tempstr << "\'\n";
-	usage();
+    if (tempstr == "-x") {
+      istringstream tmp(argv[i+1]);
+      tmp >> _server;
+      cerr << "Will load network data from: " << _server << endl;
+      i++;
+    } else if (tempstr=="-T" || tempstr=="-F") {
+      //A sequence of data sources to merge
+      ostringstream argcom;
+      while (i<argc) {
+        if (tempstr=="-T") {
+          argcom << " -T ";
+          if (argc<i+3) {
+            cerr << "Insufficient arguments after -T option\n";
+            usage();
+          }
+          argcom << argv[i+1] << " " << argv[i+2];
+          i+=3;
+        } else if (tempstr=="-F") {
+          argcom << " -F ";
+          argcom << argv[i+1] << " ";
+          i+=2;
+        } else break;
+        if (i<argc) tempstr = argv[i];
       }
+      i--;
+      string *newcommands = new string[_numdatarequests+1];
+      for (int j=0; j<_numdatarequests; j++) {
+        newcommands[j] = _datarequests[j];
+      }
+      newcommands[_numdatarequests] = argcom.str();
+      _numdatarequests++;
+      delete[] _datarequests;
+      _datarequests = newcommands;
+    } else if (tempstr=="-r") {
+      //Specify the sampling rate
+      istringstream tmp(argv[i+1]);
+      tmp >> _samprate;
+      cerr << "Will write data with " << _samprate << " sampling rate\n";
+      i++;      
+    } else {
+      cerr << "Bad argument \'"<< tempstr << "\'\n";
+      usage();
     }
+  }
   cerr << "Generated " << _numdatarequests << " commands:" << endl;
   for (int j=0; j<_numdatarequests; j++) {
     cerr << _datarequests[j] << endl;
