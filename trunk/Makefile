@@ -176,7 +176,7 @@ Site.o: Site.h Site.cc IntegPeriod.h TimeCoord.h Antenna.h Source.h
 Source.o: Source.h Source.cc TimeCoord.h
 	$(CC) -c Source.cc
 
-SolarFlare.o: SolarFlare.h SolarFlare.cc TimeCoord.h RFI.h
+SolarFlare.o: SolarFlare.h SolarFlare.cc TimeCoord.h RFI.h IntegPeriod.h
 	$(CC) -c SolarFlare.cc
 
 chapman.o: Makefile chapman.for
