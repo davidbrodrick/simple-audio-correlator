@@ -115,23 +115,23 @@ public:
   //data and count are filled in by the methods
   //count may be zero even if true is returned (connection ok but no data)
   static bool load(IntegPeriod *&data, int &count,
-		   long long start, long long end,
-		   const char *server="localhost",
-		   int port=31234, bool preprocess=true);
+                   long long start, long long end,
+                   const char *server="localhost",
+                   int port=31234, bool preprocess=true);
   static bool load(IntegPeriod *&data, int &count,
-		   long long start, long long end,
-		   TCPstream &sock, bool preprocess=true);
+                   long long start, long long end,
+                   TCPstream &sock, bool preprocess=true);
   //Load 'raw' data (includes audio if available)
   static bool loadraw(IntegPeriod *&data, int &count,
-		      long long start, long long end,
+                      long long start, long long end,
                       int &samprate,
-		      const char *server="localhost", int port=31234);
+                      const char *server="localhost", int port=31234);
   static bool loadraw(IntegPeriod *&data, int &count,
-		      long long start, long long end,
+                      long long start, long long end,
                       int &samprate, TCPstream &sock);
   //Load from a file
-  static bool load(IntegPeriod *&data, int &count, const char *infile);
-  static bool load(IntegPeriod *&data, int &count, ifstream &infile);
+  static bool load(IntegPeriod *&data, int &count, const char *infile, bool keepaudio=false);
+  static bool load(IntegPeriod *&data, int &count, ifstream &infile, bool keepaudio=false);
 
   //Write the array of IntegPeriods to a file
   //Fails silently it seems...

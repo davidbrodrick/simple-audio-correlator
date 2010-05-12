@@ -30,8 +30,8 @@ on the command line. Data request are delimited using any other command line
 options. Data load requests can specify that data should be loaded from a file
 or from a network server.
 
-To load data from a file, use "-F <filename>", eg:
-./sacmkwav  -F mydata.dat
+To load data from a file, use "-F <filename> -r <samprate>", eg:
+./sacmkwav -F mydata.dat -r 44100
 
 When loading data from a network server you need to specify the time range of
 the data. Times are specified in the format, YYYY.MM.DD.hh:mm:ss, eg,

@@ -883,7 +883,7 @@ bool IntegPeriod::load(IntegPeriod *&data, int &count,
 }
 
 
-bool IntegPeriod::load(IntegPeriod *&data, int &count, const char *infile)
+bool IntegPeriod::load(IntegPeriod *&data, int &count, const char *infile, bool keepaudio)
 {
   data = NULL;
   count = 0;
@@ -893,12 +893,12 @@ bool IntegPeriod::load(IntegPeriod *&data, int &count, const char *infile)
     cerr << "ERROR opening " << infile << endl;
     return false;
   }
-  bool res = load(data,count,tfile);
+  bool res = load(data,count,tfile,keepaudio);
   tfile.close();
   return res;
 }
 
-bool IntegPeriod::load(IntegPeriod *&data, int &count, ifstream &infile)
+bool IntegPeriod::load(IntegPeriod *&data, int &count, ifstream &infile, bool keepaudio)
 {
   data = NULL;
   count = 0;
@@ -927,12 +927,14 @@ bool IntegPeriod::load(IntegPeriod *&data, int &count, ifstream &infile)
     //audio. Use the loadraw command if you want to play audio...
     if (data[count-1].rawAudio!=NULL) {
       if (firstaudio) {
-	firstaudio = false;
-	cerr << "Found raw audio data: REPROCESSING DATA\n";
+        firstaudio = false;
+        cerr << "Found raw audio data: REPROCESSING DATA\n";
       }
       data[count-1].doCorrelations();
-      //Free up the memory
-      data[count-1].keepOnly(1,1,0);
+      if (!keepaudio) {
+        //Free up the memory
+        data[count-1].keepOnly(1,1,0);
+      }
     }
 
     if (count==arrlen) {
@@ -1199,8 +1201,7 @@ void IntegPeriod::writeWAVE(const IntegPeriod *data, int datlen,
   datfile.write((char*)&audiosize, sizeof(unsigned long));
   for (int i=0; i<datlen; i++) {
     if (data[i].audioLen!=0) {
-      datfile.write((char*)data[i].rawAudio,
-		    sizeof(audio_t)*2*data[i].audioLen);
+      datfile.write((char*)data[i].rawAudio, sizeof(audio_t)*2*data[i].audioLen);
     }
   }
 
