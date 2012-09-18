@@ -49,7 +49,6 @@ template <class T>
 void Buf<T>::put(T data)
 {
   Lock();
-  cerr << "B" << flush;
   /*cerr << "put: count=" << itsCount << " head=" << itsHead
    << " tail=" << itsTail << endl;*/
   //Insert data at head of the queue
@@ -68,16 +67,11 @@ void Buf<T>::put(T data)
   }
 
   itsEpoch++;
-  cerr << "C" << flush;
   Unlock();
-  cerr << "D" << flush;
   //Alert waiting threads that new data is available
   pthread_mutex_lock(&itsWaitMutex);
-  cerr << "E" << flush;
   pthread_cond_broadcast(&itsWaitCond);
-  cerr << "F" << flush;
   pthread_mutex_unlock(&itsWaitMutex);
-  cerr << "G" << flush;
 }
 
 
@@ -174,16 +168,12 @@ int Buf<T>::getOldest()
 template <class T>
 void Buf<T>::wait4Epoch(int epoch)
 {
-  cerr << "wait4epoch: " << epoch << endl;
   Lock();
   pthread_mutex_lock(&itsWaitMutex);
   while(epoch>itsEpoch) {
-    cerr << "2";
     Unlock();
-    cerr << "3";
     //Condition is signalled everytime new data is added
     pthread_cond_wait(&itsWaitCond,&itsWaitMutex);
-    cerr << "4";
     Lock();
   }
   pthread_mutex_unlock(&itsWaitMutex);

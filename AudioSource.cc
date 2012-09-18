@@ -119,7 +119,6 @@ void AudioSource::run()
 	error = true;
       }
     }
-    cout << "A" << flush;
     //Insert the new data in our output buffer
     itsOutputBuf->put(intper);
     cout << "." << flush;

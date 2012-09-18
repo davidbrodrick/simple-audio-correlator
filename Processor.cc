@@ -46,7 +46,6 @@ Processor::~Processor()
 void Processor::run()
 {
   while (itsKeepRunning) {
-    cerr << "AARRGGHH\n";
     //Get the next audio period from our input buffer
     IntegPeriod &intper = getNextInput();
     //Calculate the frequency spectra of the input audio

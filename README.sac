@@ -39,10 +39,7 @@ or the code to get sac to build on your system.
 Note for non-Debian users: Steve Heaton has advised that he didn't need
 the -lpng library with RedHat. In Debian pgplot depends on it.
 
-Send bug fixes/comments/patches/feature requests to brodrick@fastmail.fm
-
-This software requires g++-3.2 in order to compile successfully.
-It will NOT compile with g++-2.95/old libstdc++.
+Send bug fixes/comments/patches/feature requests to brodrick@gmail.com
 
 It is certainly NOT ANSI C++ compliant, for lots of reasons, mainly the use of
 the  'long long' data type for representation of time. It might be hard to
