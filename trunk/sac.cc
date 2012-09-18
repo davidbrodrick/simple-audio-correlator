@@ -36,9 +36,9 @@
 #include <string.h>
 
 //Configure sound card and start the audio thread
-void initAudio(ConfigFile &config, Buf<IntegPeriod*> &sink);
+void initAudio(ConfigFile &config, Buf<IntegPeriod*> *sink);
 //Configure and start the data processing thread
-void initProcessor(ConfigFile &config, Buf<IntegPeriod*> &source,
+void initProcessor(ConfigFile &config, Buf<IntegPeriod*> *source,
 		   StoreMaster *sink, StoreMaster *rawsink);
 
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     }
 
     //Create buffer between audio and data processing threads
-    Buf<IntegPeriod*> audiobuf(30);
+    Buf<IntegPeriod*> *audiobuf = new Buf<IntegPeriod*>(30);
     //Start audio thread with specified parameters
     initAudio(theconfig, audiobuf);
     //initAudio(0, _samprate, _integperiod, audiobuf); //Null input source
@@ -103,10 +103,10 @@ int main(int argc, char *argv[])
 
 /////////////////////////////////////////////////////////////////////////////
 //Start the audio thread
-void initAudio(ConfigFile &config, Buf<IntegPeriod*> &sink)
+void initAudio(ConfigFile &config, Buf<IntegPeriod*> *sink)
 {
   //Create the AudioSource
-  AudioSource *aud = new AudioSource(config.getAudioDev().c_str(), &sink);
+  AudioSource *aud = new AudioSource(config.getAudioDev().c_str(), sink);
   //Configure for stereo operation, even if only using 1 channel...
   aud->setChannels(2);
   //Configure sampling rate
@@ -129,12 +129,12 @@ void initAudio(ConfigFile &config, Buf<IntegPeriod*> &sink)
 /////////////////////////////////////////////////////////////////////////////
 //Start the data processing thread
 void initProcessor(ConfigFile &config,
-		   Buf<IntegPeriod*> &source,
+		   Buf<IntegPeriod*> *source,
 		   StoreMaster *sink,
 		   StoreMaster *rawsink)
 {
   //The Processor will do the correlations
-  Processor *proc = new Processor(&source, sink, rawsink);
+  Processor *proc = new Processor(source, sink, rawsink);
   //Determines if raw audio will be saved to disk - space consuming!
   ///Now disabled in preference to the raw data sink
   proc->setKeepAudio(false);

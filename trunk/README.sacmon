@@ -195,7 +195,7 @@ dependent libraries) only need to issue the command...
 executable called 'sacmon'. Please let me know if you had to alter the Makefile 
 or the code to get sac to build on your system. 
 
-Send bug fixes/comments/patches/feature requests to brodrick@fastmail.fm
+Send bug fixes/comments/patches/feature requests to brodrick@gmail.com
 
 It is certainly NOT ANSI C++ compliant, for lots of reasons. It might be hard
 to build this software using compilers other than gcc and operating systems
