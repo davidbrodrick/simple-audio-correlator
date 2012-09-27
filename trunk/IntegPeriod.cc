@@ -979,70 +979,41 @@ void IntegPeriod::merge(IntegPeriod *&resdata, int &rescount,
 
 void IntegPeriod::sort(IntegPeriod *&data, int count)
 {
-  IntegPeriod *resdata = new IntegPeriod[count];
-
-  bool flags[count];
-  for (int i=0; i<count; i++) flags[i] = false;
-
-  for (int i=0; i<count; i++) {
-    //Find the minimum time remaining
-    timegen_t besttime = -1;
-    int bestind = 0;
-    for (int i1=0; i1<count; i1++) {
-      if (!flags[i1] && (data[i1].timeStamp<besttime || besttime==-1)) {
-	bestind = i1;
-        besttime = data[i1].timeStamp;
-      }
-    }
-
-    flags[bestind] = true;
-    resdata[i] = data[bestind];
+  if (count<=1) return;
+    
+  // Break the data in half
+  int middle=count/2;
+  int rlen;
+  if (count>2*middle)
+    rlen=middle+1;
+  else
+    rlen=middle;
+  
+  // Sort the left half
+  IntegPeriod *left = new IntegPeriod[middle];
+  for (int i=0; i<middle; i++) {
+    left[i]=data[i];
   }
+  sort(left, middle);
+  
+  // Sort the right half
+  IntegPeriod *right = new IntegPeriod[rlen];
+  for (int i=0; i<rlen; i++) {
+    right[i]=data[middle+i];
+  }
+  sort(right, rlen);
+  
+  // Merge the results
+  IntegPeriod *resdata;
+  int reslen;
+  merge(resdata, reslen, left, middle, right, rlen);
+  
   delete[] data;
+  delete[] left;
+  delete[] right;
   data = resdata;
 }
 
-/*void IntegPeriod::sort(IntegPeriod *&data, int count)
-{
-  IntegPeriod *resdata = new IntegPeriod[count];
-
-  bool flags[count];
-  for (int i=0; i<count; i++) flags[i] = false;
-
-  bool done = false;
-  int resindex = 0;
-
-  while (!done) {
-    //Find the minimum time remaining
-    unsigned long long besttime = 0xFFFFFFFFFFFFFFFFll;
-    int bestind = 0;
-    for (int i1=0; i1<count; i1++) {
-      if (!flags[i1] && (unsigned long long)(data[i1].timeStamp)<besttime) {
-	bestind = i1;
-        besttime = data[i1].timeStamp;
-      }
-    }
-    if (besttime==0xFFFFFFFFFFFFFFFFll) break;
-
-    //Then count how many after the minimum monotonically increase
-    unsigned long long lasttime = besttime;
-    int j;
-    for (j=bestind+1; j<count; j++) {
-      //If time has stopped increasing, break
-      if ((unsigned long long)(data[j].timeStamp)<lasttime) break;
-      lasttime = data[j].timeStamp;
-    }
-
-    for (int i=bestind; i<j; i++) {
-      //Mark that we have used each point
-      flags[i] = true;
-      resdata[resindex] = data[i];
-      resindex++;
-    }
-  }
-  delete[] data;
-  data = resdata;
-}*/
 
 /////////////////////////////////////////////////////////////////
 //Erk.

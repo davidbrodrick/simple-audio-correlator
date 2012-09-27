@@ -151,11 +151,11 @@ public:
   //Scale and offset both inputs to the scale of power1 of the reference
   static void translate(IntegPeriod *data, int datalen,
 			IntegPeriod *ref, int reflen);
-  //Merge and timesort the given integration periods
+  //Merge and timesort the given, sorted, integration periods
   static void merge(IntegPeriod *&resdata, int &rescount,
 		    IntegPeriod *data1, int count1,
 		    IntegPeriod *data2, int count2);
-  //Time sort the integration periods
+  //Time sort the unordered integration periods
   static void sort(IntegPeriod *&data, int count);
   //Normalise power 1 and power 2 values and then scale cross power
   static void normalise(IntegPeriod *&data, int count);
