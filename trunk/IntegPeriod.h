@@ -105,7 +105,9 @@ public:
   //Flag to indicate if this period is considered to be peturbed by RFI.
   bool RFI;
 
-  //Calculate simple zero lag correlations
+  //Calculate simple zero lag correlations with the given channel gains
+  void doCorrelations(float gain1, float gain2);
+  //Calculate simple zero lag correlations with unity gain
   void doCorrelations();
   
   //Discard any data except the indicated data
@@ -204,7 +206,8 @@ private:
   //This finds the mean of the audio samples and subtracts
   //this away from each sample to produced signed data.
   //This removes the DC offset terms in the data.
-  void processAudio();
+  //The given gains are applied to the audio channels
+  void processAudio(float gain1, float gain2);
   //Return the address of the next blocks of audio to integrate
   //Will return NULL for each pointer if insufficient audio
   //data is available.

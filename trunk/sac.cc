@@ -133,8 +133,11 @@ void initProcessor(ConfigFile &config,
 		   StoreMaster *sink,
 		   StoreMaster *rawsink)
 {
+  //Get the gains to apply to each channel
+  float gain1=config.getGain1();
+  float gain2=config.getGain2();
   //The Processor will do the correlations
-  Processor *proc = new Processor(source, sink, rawsink);
+  Processor *proc = new Processor(source, sink, rawsink, gain1, gain2);
   //Determines if raw audio will be saved to disk - space consuming!
   ///Now disabled in preference to the raw data sink
   proc->setKeepAudio(false);

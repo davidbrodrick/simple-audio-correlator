@@ -15,6 +15,7 @@
 #include <Processor.h>
 #include <IntegPeriod.h>
 #include <StoreMaster.h>
+#include <ConfigFile.h>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -23,11 +24,14 @@
 //Constructor
 Processor::Processor(Buf<IntegPeriod*> *source,
                      StoreMaster *sinc,
-		     StoreMaster *rawsinc)
+                     StoreMaster *rawsinc,
+                     float gain1, float gain2)
 :itsInBuf(source),
 itsOutBuf(sinc),
 itsRawOutBuf(rawsinc),
 itsLastEpoch(-1),
+itsGain1(gain1),
+itsGain2(gain2),
 itsKeepAudio(false)
 {
   ThreadedObject();
@@ -49,7 +53,7 @@ void Processor::run()
     //Get the next audio period from our input buffer
     IntegPeriod &intper = getNextInput();
     //Calculate the frequency spectra of the input audio
-    intper.doCorrelations();
+    intper.doCorrelations(gain1, gain2);
 
     if (itsRawOutBuf!=NULL) {
       IntegPeriod *intpernostrip = new IntegPeriod();
