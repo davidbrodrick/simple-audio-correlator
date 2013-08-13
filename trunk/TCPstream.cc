@@ -233,10 +233,8 @@ IPaddress::IPaddress(const char * host_name)
                                         // First check to see if the host
                                         // name is given in the IP address
                                         // dot notation
-  if( (address = inet_addr(host_name)) != (unsigned long)(-1) )
-    return;
-
   struct hostent *host_ptr = ::gethostbyname(host_name);
+  
   if( host_ptr == 0 )
   {
     cerr << "Host name '" << host_name << "' cannot be resolved";

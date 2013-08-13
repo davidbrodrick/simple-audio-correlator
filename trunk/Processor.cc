@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <math.h>
 
 ///////////////////////////////////////////////////////////////////////
 //Constructor
@@ -34,6 +35,10 @@ itsGain1(gain1),
 itsGain2(gain2),
 itsKeepAudio(false)
 {
+  //We want sqrt of these since the gain will be squared when samples multiplied
+  itsGain1=::sqrt(gain1);
+  itsGain2=::sqrt(gain2);
+
   ThreadedObject();
 }
 
