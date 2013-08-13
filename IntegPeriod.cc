@@ -80,7 +80,7 @@ void IntegPeriod::processAudio(float gain1, float gain2)
   mean1 = (mean1/(double)audioLen);
   mean2 = (mean2/(double)audioLen);
   for (int cnt=0; cnt<audioLen; cnt++) {
-    audio1[cnt]=gain1*(audio1-[cnt](float)mean1);
+    audio1[cnt]=gain1*(audio1[cnt]-(float)mean1);
   }
   for (int cnt=0; cnt<audioLen; cnt++) {
     audio2[cnt]=gain2*(audio2[cnt]-(float)mean2);
