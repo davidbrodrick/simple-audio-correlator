@@ -6,7 +6,6 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 2.
 //
-// $Id: ConfigFile.h,v 1.6 2004/03/12 02:35:09 brodo Exp $
 
 #ifndef _CONFIGFILE_HDR_
 #define _CONFIGFILE_HDR_
@@ -54,10 +53,14 @@ private:
   float itsLatitude;
   //Longitude of the telescope in degrees, East +ve.
   float itsLongitude;
+  //Gain of the first sound card channel
+  float itsGain1;
+  //Gain of the second sound card channel
+  float itsGain2;
   //Handle to the file we are parsing.
   ifstream itsFile;
   //Record of how many raw lines we have read from the file
-  int itsLineNum;
+  int itsLineNum;  
 
   //Return the next meaningful line from the file. This strips
   //comments and blank lines and substitues macro values.
@@ -113,6 +116,12 @@ public:
 
   //Return the server longitude, in degrees, East +ve
   inline float getLongitude() {return itsLongitude;}
+  
+  //Return the required gain factor for sound card channel 1
+  inline float getGain1() {return itsGain1;}
+  
+  //Return the required gain factor for sound card channel 2
+  inline float getGain2() {return itsGain2;} 
 };
 
 #endif

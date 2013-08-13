@@ -30,6 +30,8 @@ ConfigFile::ConfigFile(const char *fname)
   itsNumBins(64),
   itsLatitude(-30.3147),
   itsLongitude(149.5616),
+  itsGain1(1.0),
+  itsGain2(1.0),
   itsFile(fname),
   itsLineNum(0)
 {
@@ -199,6 +201,10 @@ void ConfigFile::parseFile()
 	exit(1);
       }
       itsLongitude = val;
+    } else if (key=="gain1:") {
+      *line >> itsGain1;
+    } else if (key=="gain2:") {
+      *line >> itsGain2;
     } else {
       cerr << "Unknown meaning, line " << itsLineNum << " starts: "
 	   << key << endl;

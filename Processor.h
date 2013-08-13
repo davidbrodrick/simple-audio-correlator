@@ -6,7 +6,6 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 2.
 //
-// $Id: Processor.h,v 1.6 2004/04/07 12:40:32 brodo Exp $
 
 //Thread to calculate the correlation functions of recently captured audio
 //samples. This reads the raw data from a buffer from the audio capture
@@ -32,7 +31,7 @@ public:
   //IntegPeriods with attached raw audio data will be stored in the
   //rolling 'rawout' storage buffer if 'rawout' is non-null.
   Processor(Buf<IntegPeriod*> *in, StoreMaster *out,
-	    StoreMaster *rawout=NULL);
+            StoreMaster *rawout=NULL, float gain1=1.0, float gain2=1.0);
   //Destructor
   ~Processor();
 
@@ -59,6 +58,11 @@ private:
   int itsNumBins;
   //Epoch of the last data we obtained from the input buffer
   int itsLastEpoch;
+  
+  //Gain for channel 1
+  float itsGain1;
+  //Channel 2
+  float itsGain2;
 
   //Do we keep audio (true) or strip it before saving (false)
   bool itsKeepAudio;

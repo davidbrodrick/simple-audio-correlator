@@ -6,7 +6,6 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, version 2.
 //
-// $Id: IntegPeriod.cc,v 1.24 2004/11/21 01:58:21 brodo Exp brodo $
 
 //Class to encapsulate the information produced each telescope integration
 //period. This wraps up most operations which can be performed on an
@@ -60,7 +59,7 @@ IntegPeriod::~IntegPeriod()
 
 ///////////////////////////////////////////////////////////////////////
 //Convert intervleaved audio to two zero mean signed arrays
-void IntegPeriod::processAudio()
+void IntegPeriod::processAudio(float gain1, float gain2)
 {
   //Create storage space for the processed audio
   if (audio1) delete[] audio1;
@@ -81,19 +80,26 @@ void IntegPeriod::processAudio()
   mean1 = (mean1/(double)audioLen);
   mean2 = (mean2/(double)audioLen);
   for (int cnt=0; cnt<audioLen; cnt++) {
-    audio1[cnt]-=(float)mean1;
+    audio1[cnt]=gain1*(audio1-[cnt](float)mean1);
   }
   for (int cnt=0; cnt<audioLen; cnt++) {
-    audio2[cnt]-=(float)mean2;
+    audio2[cnt]=gain2*(audio2[cnt]-(float)mean2);
   }
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 //Perform correlations for each input and the cross product of them
 void IntegPeriod::doCorrelations()
 {
-  processAudio();
+  //Unity gain
+  doCorrelations(1.0, 1.0);
+}
+
+///////////////////////////////////////////////////////////////////////
+//Perform correlations for each input and the cross product of them
+void IntegPeriod::doCorrelations(float gain1, float gain2)
+{
+  processAudio(gain1, gain2);
 
   power1 = correlate(audioLen, audio1, audio1);
   power2 = correlate(audioLen, audio2, audio2);
