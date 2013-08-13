@@ -53,7 +53,7 @@ void Processor::run()
     //Get the next audio period from our input buffer
     IntegPeriod &intper = getNextInput();
     //Calculate the frequency spectra of the input audio
-    intper.doCorrelations(gain1, gain2);
+    intper.doCorrelations(itsGain1, itsGain2);
 
     if (itsRawOutBuf!=NULL) {
       IntegPeriod *intpernostrip = new IntegPeriod();
