@@ -675,6 +675,10 @@ bool StoreMaster::fileAfter(string basedir,
   dirent **yearslist;
   int numyears = scandir(dirname.str().c_str(), &yearslist,
 			 quaddigit, alphasort);
+  if (numyears==0) {
+    //No data in the archive
+    return false;
+  }
   int startyear;
   for (startyear=0; startyear<numyears; startyear++) {
     //We don't want to look backward in time so seek through the list
