@@ -1,0 +1,1 @@
+SAC- The Simple Audio Correlator is a client/server suite for correlating the audio output of radio receivers, storing the data to disk, rejecting interference, plotting it, etc, etc..
