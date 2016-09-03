@@ -650,7 +650,7 @@ bool StoreMaster::fileAfter(string basedir,
   bool done = false;
   time_t searchtime = epoch/1000000;
   struct tm *searchutc = gmtime(&searchtime);
-  bool sameday = true, samemonth = true, sameyear = true;
+  bool sameday = true, samemonth = true;
 
   //These hold a string form of the argument time
   ostringstream argyear, argmonth, argday, argfile;
@@ -688,7 +688,7 @@ bool StoreMaster::fileAfter(string basedir,
       break;
     }
     if (strcmp(yearslist[startyear]->d_name, argyear.str().c_str())>0) {
-      sameyear = samemonth = sameday = false;
+      samemonth = sameday = false;
       break;
     }
   }
@@ -781,7 +781,7 @@ bool StoreMaster::fileAfter(string basedir,
       for (int rm=0;rm<numdays;rm++) delete dayslist[rm];
       delete[] dayslist;
     } //End "for each month"
-    sameyear = samemonth = sameday = false;
+    samemonth = sameday = false;
 
     for (int rm=0;rm<nummonths;rm++) delete monthslist[rm];
     delete[] monthslist;
