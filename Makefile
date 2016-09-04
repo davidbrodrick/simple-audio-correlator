@@ -3,7 +3,7 @@
 
 INCLUDE = -I.
 #CCOPTS  = -O3 -march=pentium -D_REENTRANT -Wall
-CCOPTS  = -g -pthread -DREENTRANT -Wall -D_POSIX_REENTRANT_FUNCTIONS
+CCOPTS  = -g -pthread -DREENTRANT -Wall -D_POSIX_REENTRANT_FUNCTIONS -Wno-write-strings
 CC	= g++ ${INCLUDE} ${CCOPTS}
 LIB	= g++
 LIBFLAGS= -g -lstdc++ -lpthread -DREENTRANT -pthread -D_POSIX_REENTRANT_FUNCTIONS
@@ -28,48 +28,48 @@ sacmon: $(SACMONOBJS)
 
 SACMKWAVOBJS = sacmkwav.o IntegPeriod.o TimeCoord.o TCPstream.o RFI.o
 sacmkwav: $(SACMKWAVOBJS)
-	$(LIB) -o sacmkwav  $(SACMKWAVOBJS) $(LIBFLAGS)
+	$(LIB) -o sacmkwav $(SACMKWAVOBJS) $(LIBFLAGS)
 
 SACRIOOBJS = sacriometer.o IntegPeriod.o TimeCoord.o RFI.o PlotArea.o \
 	     SolarFlare.o chapman.o TCPstream.o
 sacriometer: $(SACRIOOBJS)
-	$(LIB) -o sacriometer  $(SACRIOOBJS) $(XLIBFLAGS)
+	$(LIB) -o sacriometer $(SACRIOOBJS) $(XLIBFLAGS)
 
 SACIQOBJS = saciq.o IntegPeriod.o TimeCoord.o TCPstream.o PlotArea.o RFI.o
 saciq: $(SACIQOBJS)
-	$(LIB) -o saciq  $(SACIQOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o saciq $(SACIQOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 SACRTOBJS = sacrt.o IntegPeriod.o TimeCoord.o TCPstream.o PlotArea.o RFI.o
 sacrt: $(SACRTOBJS)
-	$(LIB) -o sacrt  $(SACRTOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o sacrt $(SACRTOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 SACEDITOBJS = sacedit.o IntegPeriod.o TimeCoord.o PlotArea.o RFI.o TCPstream.o
 sacedit: $(SACEDITOBJS)
-	$(LIB) -o sacedit  $(SACEDITOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o sacedit $(SACEDITOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 SACMERGEOBJS = sacmerge.o IntegPeriod.o TimeCoord.o RFI.o TCPstream.o
 sacmerge: $(SACMERGEOBJS)
-	$(LIB) -o sacmerge  $(SACMERGEOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o sacmerge $(SACMERGEOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 SACMODOBJS = sacmodel.o IntegPeriod.o TimeCoord.o TCPstream.o PlotArea.o RFI.o \
 	     Site.o Antenna.o Source.o
 sacmodel: $(SACMODOBJS)
-	$(LIB) -o sacmodel  $(SACMODOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o sacmodel $(SACMODOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 SACROTOBJS = sacrotate.o IntegPeriod.o TimeCoord.o TCPstream.o PlotArea.o \
 	RFI.o Source.o Site.o Antenna.o
 sacrotate: $(SACROTOBJS)
-	$(LIB) -o sacrotate  $(SACROTOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o sacrotate $(SACROTOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 SACFORWARDOBJS = sacforward.o IntegPeriod.o TimeCoord.o TCPstream.o \
 	         DataForwarder.o RFI.o ThreadedObject.o
 sacforward: $(SACFORWARDOBJS)
-	$(LIB) -o sacforward  $(SACFORWARDOBJS) $(LIBFLAGS)
+	$(LIB) -o sacforward $(SACFORWARDOBJS) $(LIBFLAGS)
 
 SACSIMOBJS = sacsim.o IntegPeriod.o TimeCoord.o TCPstream.o PlotArea.o RFI.o \
 	     Source.o Site.o Antenna.o
 sacsim: $(SACSIMOBJS)
-	$(LIB) -o sacsim  $(SACSIMOBJS) $(LIBFLAGS) $(XLIBFLAGS)
+	$(LIB) -o sacsim $(SACSIMOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
 sacsim.o: sacsim.cc IntegPeriod.h TimeCoord.h PlotArea.h Source.h \
 	  Antenna.h Site.h Makefile 

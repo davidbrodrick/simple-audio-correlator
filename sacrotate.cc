@@ -132,13 +132,11 @@ int main (int argc, char *argv[])
   x->plotPoints(_numData, timedata, temp, 4);
 
   float phasebuf[_numData];
-  float azbuf[_numData];
   for (int i=0; i<_numData; i++) {
     //Get the sidereal time for this data point
     timegen_t lst = _data[i].timeStamp;
     //Calculate the Az/El position of the source at that time
     pair_t azel = _refSource->getAzEl(lst, _site->getSite());
-    azbuf[i] = azel.c1;
     //Get the phase response for the given baseline, frequency, etc.
     phasebuf[i] = _site->getPhaseResponse(azel);
     //Subtract reference phase from the observed interferometer phase

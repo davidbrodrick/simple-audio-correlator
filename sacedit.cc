@@ -116,9 +116,8 @@ int main (int argc, char *argv[])
 	cerr << "You need to specify the range to zoom to.\n";
         continue;
       }
-      if (tempstart<_data[0].timeStamp && tempend<_data[0].timeStamp ||
-	  tempstart>_data[_datalen-1].timeStamp &&
-	  tempend>_data[_datalen-1].timeStamp) {
+      if ((tempstart<_data[0].timeStamp && tempend<_data[0].timeStamp) ||
+	  (tempstart>_data[_datalen-1].timeStamp && tempend>_data[_datalen-1].timeStamp)) {
 	cerr << "All data would be outside that time range!\n";
 	cerr << "The minimum is " << _data[0].timeStamp/3600000000.0 << endl;
 	cerr << "The maximum is " << _data[_datalen-1].timeStamp/3600000000.0 << endl;

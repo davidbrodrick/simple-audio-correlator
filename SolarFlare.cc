@@ -23,7 +23,7 @@ extern "C" {
 
 /////////////////////////////////////////////////////////////////
 //Print a measure of X-ray flux in the standard notation
-static void printFlux(float flux)
+void printFlux(float flux)
 {
   cout.precision(3);
   if (flux>1e-4) {
