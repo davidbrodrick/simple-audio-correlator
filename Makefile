@@ -1,7 +1,7 @@
 #Makefile for sac - the "Simple Audio Correlator" - and associated utilities
 #Some tweaking may be required on your system.. ?
 
-INCLUDE = -I.
+INCLUDE = -I include
 #CCOPTS  = -O3 -march=pentium -D_REENTRANT -Wall
 CCOPTS  = -g -pthread -DREENTRANT -Wall -D_POSIX_REENTRANT_FUNCTIONS -Wno-write-strings
 CC	= g++ ${INCLUDE} ${CCOPTS}
@@ -71,116 +71,101 @@ SACSIMOBJS = sacsim.o IntegPeriod.o TimeCoord.o TCPstream.o PlotArea.o RFI.o \
 sacsim: $(SACSIMOBJS)
 	$(LIB) -o sacsim $(SACSIMOBJS) $(LIBFLAGS) $(XLIBFLAGS)
 
-sacsim.o: sacsim.cc IntegPeriod.h TimeCoord.h PlotArea.h Source.h \
-	  Antenna.h Site.h Makefile 
-	$(CC) -c sacsim.cc
+sacsim.o: src/sacsim.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/PlotArea.h include/Source.h include/Antenna.h include/Site.h
+	$(CC) -c src/sacsim.cc
 
-sacforward.o: sacforward.cc IntegPeriod.h TimeCoord.h DataForwarder.h Makefile \
-		TCPstream.h
-	$(CC) -c sacforward.cc
+sacforward.o: src/sacforward.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/DataForwarder.h include/TCPstream.h
+	$(CC) -c src/sacforward.cc
 
-sacmerge.o: sacmerge.cc IntegPeriod.h TimeCoord.h PlotArea.h RFI.h Makefile
-	$(CC) -c sacmerge.cc
+sacmerge.o: src/sacmerge.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/PlotArea.h include/RFI.h
+	$(CC) -c src/sacmerge.cc
 
-sacriometer.o: sacriometer.cc IntegPeriod.h TimeCoord.h PlotArea.h RFI.h \
-	       Makefile SolarFlare.h
-	$(CC) -c sacriometer.cc
+sacriometer.o: src/sacriometer.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/PlotArea.h include/RFI.h include/SolarFlare.h
+	$(CC) -c src/sacriometer.cc
 
-sacrt.o: sacrt.cc IntegPeriod.h TimeCoord.h PlotArea.h Makefile
-	$(CC) -c sacrt.cc
+sacrt.o: src/sacrt.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/PlotArea.h
+	$(CC) -c src/sacrt.cc
 
-sacedit.o: sacedit.cc IntegPeriod.h TimeCoord.h PlotArea.h RFI.h Makefile
-	$(CC) -c sacedit.cc
+sacedit.o: src/sacedit.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/PlotArea.h include/RFI.h
+	$(CC) -c src/sacedit.cc
 
-sacmodel.o: sacmodel.cc IntegPeriod.h TCPstream.h RFI.h PlotArea.h TimeCoord.h \
-	    Makefile Site.h Antenna.h
-	$(CC) -c sacmodel.cc
+sacmodel.o: src/sacmodel.cc Makefile include/IntegPeriod.h include/TCPstream.h include/RFI.h include/PlotArea.h include/TimeCoord.h include/Site.h include/Antenna.h
+	$(CC) -c src/sacmodel.cc
 
-sacmon.o: sacmon.cc IntegPeriod.h TCPstream.h RFI.h PlotArea.h TimeCoord.h \
-	  Makefile SACUtil.h
-	$(CC) -c sacmon.cc
+sacmon.o: src/sacmon.cc Makefile include/IntegPeriod.h include/TCPstream.h include/RFI.h include/PlotArea.h include/TimeCoord.h include/SACUtil.h
+	$(CC) -c src/sacmon.cc
 
-sacmkwav.o: sacmkwav.cc IntegPeriod.h TimeCoord.h Makefile
-	$(CC) -c sacmkwav.cc
+sacmkwav.o: src/sacmkwav.cc Makefile include/IntegPeriod.h include/TimeCoord.h
+	$(CC) -c src/sacmkwav.cc
 
-saciq.o: saciq.cc IntegPeriod.h PlotArea.h TimeCoord.h Makefile
-	$(CC) -c saciq.cc
+saciq.o: src/saciq.cc Makefile include/IntegPeriod.h include/PlotArea.h include/TimeCoord.h
+	$(CC) -c src/saciq.cc
 
-sacrotate.o: sacrotate.cc IntegPeriod.h TimeCoord.h PlotArea.h Makefile \
-	Antenna.h Site.h Source.h
-	$(CC) -c sacrotate.cc
+sacrotate.o: src/sacrotate.cc Makefile include/IntegPeriod.h include/TimeCoord.h include/PlotArea.h include/Antenna.h include/Site.h include/Source.h
+	$(CC) -c src/sacrotate.cc
 
-sac.o: sac.cc Buf.h AudioSource.h Processor.h StoreMaster.h WebMaster.h \
-	ConfigFile.h ThreadedObject.h Makefile
-	$(CC) -c sac.cc
+sac.o: src/sac.cc Makefile include/Buf.h include/AudioSource.h include/Processor.h include/StoreMaster.h include/WebMaster.h include/ConfigFile.h include/ThreadedObject.h
+	$(CC) -c src/sac.cc
 
-Buf.o: Buf.h Buf.cc IntegPeriod.h Makefile
-	$(CC) -c Buf.cc
+Buf.o: src/Buf.cc Makefile include/Buf.h include/IntegPeriod.h
+	$(CC) -c src/Buf.cc
         
-SACUtil.o: SACUtil.h SACUtil.cc
-	$(CC) -c SACUtil.cc
+SACUtil.o: src/SACUtil.cc Makefile include/SACUtil.h 
+	$(CC) -c src/SACUtil.cc
 
-IntegPeriod.o: IntegPeriod.h IntegPeriod.cc Makefile RFI.h TimeCoord.h
-	$(CC) -c IntegPeriod.cc
+IntegPeriod.o: src/IntegPeriod.cc Makefile include/IntegPeriod.h include/RFI.h include/TimeCoord.h
+	$(CC) -c src/IntegPeriod.cc
         
-AudioSource.o: AudioSource.h AudioSource.cc Buf.h ThreadedObject.h \
-	       IntegPeriod.h Makefile
-	$(CC) -c AudioSource.cc
+AudioSource.o: src/AudioSource.cc Makefile include/AudioSource.h include/Buf.h include/ThreadedObject.h include/IntegPeriod.h
+	$(CC) -c src/AudioSource.cc
         
-ThreadedObject.o: ThreadedObject.h ThreadedObject.cc Makefile
-	$(CC) -c ThreadedObject.cc
+ThreadedObject.o: src/ThreadedObject.cc Makefile include/ThreadedObject.h
+	$(CC) -c src/ThreadedObject.cc
 
-Processor.o: Processor.cc Processor.h Buf.h ThreadedObject.h IntegPeriod.h \
-	     Makefile 
-	$(CC) -c Processor.cc
+Processor.o: src/Processor.cc Makefile include/Processor.h include/Buf.h include/ThreadedObject.h include/IntegPeriod.h 
+	$(CC) -c src/Processor.cc
 
-StoreMaster.o: StoreMaster.cc StoreMaster.h Buf.h IntegPeriod.h \
-		TimeCoord.h Makefile 
-	$(CC) -c StoreMaster.cc
+StoreMaster.o: src/StoreMaster.cc Makefile include/StoreMaster.h include/Buf.h include/IntegPeriod.h include/TimeCoord.h
+	$(CC) -c src/StoreMaster.cc
         
-WebMaster.o: WebMaster.h WebMaster.cc TCPstream.h ConfigFile.h \
-	     ThreadedObject.h Makefile
-	$(CC) -c WebMaster.cc
+WebMaster.o: src/WebMaster.cc Makefile include/WebMaster.h include/TCPstream.h include/ConfigFile.h include/ThreadedObject.h
+	$(CC) -c src/WebMaster.cc
 
-WebHandler.o: WebHandler.h WebHandler.cc WebMaster.h TCPstream.h \
-	      StoreMaster.h IntegPeriod.h ConfigFile.h \
-              ThreadedObject.h Makefile
-	$(CC) -c WebHandler.cc
+WebHandler.o: src/WebHandler.cc Makefile include/WebHandler.h include/WebMaster.h include/TCPstream.h include/StoreMaster.h include/IntegPeriod.h include/ConfigFile.h include/ThreadedObject.h
+	$(CC) -c src/WebHandler.cc
 
-DataForwarder.o: DataForwarder.h DataForwarder.cc TCPstream.h \
-	      StoreMaster.h IntegPeriod.h ConfigFile.h \
-              ThreadedObject.h Makefile
-	$(CC) -c DataForwarder.cc
+DataForwarder.o: src/DataForwarder.cc Makefile include/DataForwarder.h include/TCPstream.h include/StoreMaster.h include/IntegPeriod.h include/ConfigFile.h include/ThreadedObject.h
+	$(CC) -c src/DataForwarder.cc
 
-RFI.o: RFI.h RFI.cc IntegPeriod.h Makefile
-	$(CC) -c RFI.cc
+RFI.o: src/RFI.cc Makefile include/RFI.h include/IntegPeriod.h
+	$(CC) -c src/RFI.cc
 
-ConfigFile.o: ConfigFile.cc ConfigFile.h Makefile
-	$(CC) -c ConfigFile.cc
+ConfigFile.o: src/ConfigFile.cc Makefile include/ConfigFile.h
+	$(CC) -c src/ConfigFile.cc
 
-TCPstream.o: TCPstream.h TCPstream.cc Makefile
-	$(CC) -c TCPstream.cc
+TCPstream.o: src/TCPstream.cc Makefile include/TCPstream.h
+	$(CC) -c src/TCPstream.cc
 
-PlotArea.o: PlotArea.h PlotArea.cc Makefile
-	$(CC) -c PlotArea.cc
+PlotArea.o: src/PlotArea.cc Makefile include/PlotArea.h
+	$(CC) -c src/PlotArea.cc
         
-TimeCoord.o: TimeCoord.h TimeCoord.cc Makefile
-	$(CC) -c TimeCoord.cc
+TimeCoord.o: src/TimeCoord.cc Makefile include/TimeCoord.h
+	$(CC) -c src/TimeCoord.cc
 
-Antenna.o: Antenna.cc TimeCoord.h
-	$(CC) -c Antenna.cc
+Antenna.o: src/Antenna.cc Makefile include/TimeCoord.h include/Antenna.h
+	$(CC) -c src/Antenna.cc
 	
-Site.o: Site.h Site.cc IntegPeriod.h TimeCoord.h Antenna.h Source.h 
-	$(CC) -c Site.cc
+Site.o: src/Site.cc Makefile include/Site.h include/IntegPeriod.h include/TimeCoord.h include/Antenna.h include/Source.h
+	$(CC) -c src/Site.cc
 	
-Source.o: Source.h Source.cc TimeCoord.h
-	$(CC) -c Source.cc
+Source.o: src/Source.cc Makefile include/Source.h include/TimeCoord.h
+	$(CC) -c src/Source.cc
 
-SolarFlare.o: SolarFlare.h SolarFlare.cc TimeCoord.h RFI.h IntegPeriod.h
-	$(CC) -c SolarFlare.cc
+SolarFlare.o: src/SolarFlare.cc Makefile include/SolarFlare.h include/TimeCoord.h include/RFI.h include/IntegPeriod.h
+	$(CC) -c src/SolarFlare.cc
 
-chapman.o: Makefile chapman.for
-	f77 -g -c chapman.for
+chapman.o: src/chapman.for Makefile
+	f77 -g -c src/chapman.for
         
 clean:
 	rm -f sac sacmon sacmkwav saciq sacxray sacrt sacmodel sacmerge \
